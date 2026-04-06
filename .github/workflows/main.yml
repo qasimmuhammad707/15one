@@ -5,20 +5,15 @@ on:
     branches:
       - main
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true   # ✅ future-proof (Node 24)
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # ✅ Checkout (updated version)
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # ✅ Deploy to S3 (pinned version, not master)
-      - name: Sync files to S3
+      - name: Sync to S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
           args: --delete --exclude ".git/*"
