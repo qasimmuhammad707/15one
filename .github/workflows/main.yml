@@ -11,7 +11,7 @@ permissions:
 
 env:
   AWS_REGION: us-east-1
-  S3_BUCKET: your-bucket-name
+  S3_BUCKET: 15attempt
   SOURCE_DIR: .
 
 jobs:
@@ -29,10 +29,13 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Debug AWS identity
+        run: aws sts get-caller-identity
+
       - name: Deploy to S3
         run: |
-          aws s3 sync "${SOURCE_DIR}" "s3://${S3_BUCKET}" \
-            --delete \
+          aws s3 cp "${SOURCE_DIR}" "s3://${S3_BUCKET}" \
+            --recursive \
             --exclude ".git/*" \
             --exclude ".github/*"
 
